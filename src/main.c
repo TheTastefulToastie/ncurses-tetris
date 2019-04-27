@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
   playfield_t *pf = playfield_create(2, 2, 10, 24);
   tetromino_t t   = tetromino_create(pf->rect.w * .5, 1, TETROMINO_Z_TYPE, pf);
 
-  goto RE_RENDER;
+  goto REDRAW;
 
   for (;;) {
     switch (renderer_get_key()) {
@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
       case 'k': case KEY_UP:    t = tetromino_rotate(t, TETROMINO_COUNTER_CLOCKWISE); goto RE_RENDER;
       default : continue;
     }
-RE_RENDER:
+REDRAW:
     renderer_draw_playfield(pf);
     renderer_draw_tetromino(t);
     renderer_present();
