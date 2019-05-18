@@ -1,7 +1,7 @@
 #include "renderer.h"
 
 void renderer_init() {
-  setlocale(LC_ALL, "");
+  setlocale(LC_ALL, "en_GB.UTF-8");
   initscr();
   cbreak();
   noecho();

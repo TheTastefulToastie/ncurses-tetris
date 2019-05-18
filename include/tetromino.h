@@ -10,14 +10,18 @@
 #define TETROMINO_J_TYPE 4
 #define TETROMINO_S_TYPE 5
 #define TETROMINO_Z_TYPE 6
+#define TETROMINO_NUM_TYPES 7
 
-#define TETROMINO_O_COLOR 0
-#define TETROMINO_I_COLOR 1
-#define TETROMINO_T_COLOR 2
-#define TETROMINO_L_COLOR 3
-#define TETROMINO_J_COLOR 4
-#define TETROMINO_S_COLOR 5
-#define TETROMINO_Z_COLOR 6
+#define TETROMINO_O_COLOR 1
+#define TETROMINO_I_COLOR 2
+#define TETROMINO_T_COLOR 3
+#define TETROMINO_L_COLOR 4
+#define TETROMINO_J_COLOR 5
+#define TETROMINO_S_COLOR 6
+#define TETROMINO_Z_COLOR 7
+
+#define TETROMINO_CLOCKWISE          1
+#define TETROMINO_COUNTER_CLOCKWISE -1
 
 typedef struct playfield_t playfield_t;
 
@@ -27,8 +31,7 @@ typedef struct {
 } block_t;
 
 typedef struct {
-  int x, y;
-  int type;
+  int x, y, type;
   playfield_t *pf;
   block_t blocks[TETROMINO_NUM_BLOCKS];
 } tetromino_t;
@@ -36,6 +39,8 @@ typedef struct {
 tetromino_t tetromino_create(int x, int y, int type, playfield_t *pf);
 tetromino_t tetromino_attach(tetromino_t t, playfield_t *pf);
 tetromino_t tetromino_move(tetromino_t t, int offset_x, int offset_y);
+tetromino_t tetromino_drop(tetromino_t t);
 tetromino_t tetromino_rotate(tetromino_t t, int dir);
+int         tetromino_get_random_type();
 
 #endif // __TETROMINO_H__

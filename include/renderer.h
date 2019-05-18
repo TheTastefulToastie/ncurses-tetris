@@ -18,9 +18,6 @@
 #define LINE_DOUBLE      6
 #define LINE_ROUNDED     7
 
-#define TETROMINO_CLOCKWISE          1
-#define TETROMINO_COUNTER_CLOCKWISE -1
-
 void renderer_init();
 void renderer_deinit();
 void renderer_present();

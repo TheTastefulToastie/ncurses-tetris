@@ -1,7 +1,7 @@
 #include <stddef.h>
+#include <stdlib.h>
 #include "tetromino.h"
 #include "playfield.h"
-
 
 tetromino_t tetromino_create(int x, int y, int type, playfield_t *pf) {
   tetromino_t t;
@@ -76,10 +76,28 @@ tetromino_t tetromino_move(tetromino_t t, int offset_x, int offset_y) {
   tetromino_t new_t = t;
   new_t.x += offset_x;
   new_t.y += offset_y;
-  return (t.pf != NULL && playfield_check_collision(new_t.pf, new_t)) ? t : new_t;
+  int collision = t.pf != NULL && playfield_check_collision(new_t.pf, new_t);
+  if (offset_y == 1 && collision) {
+    playfield_place_tetromino(t.pf, t);
+    return tetromino_create(t.pf->rect.w * .5, 0, tetromino_get_random_type(), t.pf);
+  }
+  return collision ? t : new_t;
+}
+
+tetromino_t tetromino_drop(tetromino_t t) {
+  tetromino_t new_t = t;
+  new_t.y++;
+  while (!playfield_check_collision(new_t.pf, new_t)) {
+    t = new_t;
+    new_t.y++;
+  }
+  playfield_place_tetromino(t.pf, t);
+  return tetromino_create(t.pf->rect.w * .5, 0, tetromino_get_random_type(), t.pf);
 }
 
 tetromino_t tetromino_rotate(tetromino_t t, int dir) {
+  if (t.type == TETROMINO_O_TYPE) return t;
+
   tetromino_t new_t = t;
 
   for (block_t *b = new_t.blocks, *end = new_t.blocks + TETROMINO_NUM_BLOCKS; b != end; ++b) {
@@ -89,4 +107,8 @@ tetromino_t tetromino_rotate(tetromino_t t, int dir) {
   }
 
   return (t.pf != NULL && playfield_check_collision(new_t.pf, new_t)) ? t : new_t;
+}
+
+int tetromino_get_random_type() {
+  return rand() % TETROMINO_NUM_TYPES;
 }
